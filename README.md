@@ -17,4 +17,5 @@ RabbitMQ
 Docker
 Dockerize
 JWT
+Prisma
 Postgres
