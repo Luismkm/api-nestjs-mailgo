@@ -1,0 +1,59 @@
+version: "3"
+
+services:
+
+  dbpostgres:
+    image: postgres
+    container_name: nestjs-postgres
+    volumes:
+      - db_mailgo:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: mailgo
+
+  rabbitmq:
+    image: "rabbitmq:3.8-management-alpine"
+    container_name: nestjs-rabbitmq
+    hostname: localhost
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq/mnesia
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=admin
+  
+  mailgo:
+    build: ./mailgo
+    image: luismkm/mailgo
+    container_name: nestjs-mailgo
+    entrypoint: dockerize -wait tcp://rabbitmq:15672 --wait tcp://dbpostgres:5432 -timeout 60s ./.docker/entrypoint.sh
+    ports:
+      - 3000:3000
+    volumes:
+      - ./mailgo:/home/nestjs/mailgo
+    tty: true
+    depends_on:
+      - dbpostgres
+      - rabbitmq
+  
+  mailgo-consumer:
+    build: ./mailgo-consumer
+    image: luismkm/mailgo-consumer
+    container_name: nestjs-mailgo-consumer
+    entrypoint: dockerize -wait tcp://rabbitmq:15672 -timeout 60s ./.docker/entrypoint.sh
+    ports:
+      - 3001:3001
+    volumes:
+      - ./mailgo-consumer:/home/nestjs/mailgo-consumer
+    tty: true
+    depends_on:
+      - rabbitmq
+  
+volumes:
+  db_mailgo:
+  rabbitmq_data:
