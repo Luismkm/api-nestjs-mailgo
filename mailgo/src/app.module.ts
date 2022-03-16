@@ -9,7 +9,6 @@ import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { SendEmailModule } from './send-email/send-email.module';
 import { UnsubscribeModule } from './unsubscribe/unsubscribe.module';
 import { ClientModule } from './client/client.module';
-import { ClientTokenService } from './client-token/client-token.service';
 import { ClientTokenModule } from './client-token/client-token.module';
 
 @Module({
