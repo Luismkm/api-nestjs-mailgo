@@ -8,7 +8,7 @@ import { Module } from '@nestjs/common';
       prefetchCount: 1,
       exchanges: [
         {
-          name: 'exmailgo',
+          name: 'exchange-mailgo',
           type: 'direct',
         },
       ],

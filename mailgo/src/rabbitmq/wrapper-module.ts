@@ -7,7 +7,7 @@ import { Module } from '@nestjs/common';
       uri: `amqp://admin:admin@rabbitmq:5672`,
       exchanges: [
         {
-          name: 'exmailgo',
+          name: 'exchange-mailgo',
           type: 'direct',
         },
       ],

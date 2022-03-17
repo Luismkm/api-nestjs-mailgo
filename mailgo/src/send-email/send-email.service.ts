@@ -24,7 +24,7 @@ export class SendEmailService {
           email: client.email,
         });
       }
-      await this.amqpConnection.publish('exmailgo', 'routermail', {
+      await this.amqpConnection.publish('exchange-mailgo', 'routermail', {
         client,
         emailContent,
         token,

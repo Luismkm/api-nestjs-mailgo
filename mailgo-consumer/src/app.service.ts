@@ -9,7 +9,7 @@ export class AppService {
   @RabbitRPC({
     exchange: process.env.RABBITMQ_EXCHANGE,
     routingKey: process.env.RABBITMQ_ROUTER_KEY,
-    queue: 'mail',
+    queue: 'queue-mail',
   })
   public async rpcHandler(msgQueue: MailData) {
     await this.mailService.sendUserConfirmation(msgQueue);
