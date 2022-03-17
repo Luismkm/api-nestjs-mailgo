@@ -13,10 +13,10 @@ type IClient = {
 export class ClientService {
   constructor(
     private readonly prisma: PrismaService,
-    private readonly unsubscribesService: UnsubscribeService
-    ) {}
+    private readonly unsubscribesService: UnsubscribeService,
+  ) {}
 
-    private readonly EMAIL_REGEX =
+  private readonly EMAIL_REGEX =
     /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 
   private validateEmail(email: string): boolean {
@@ -27,13 +27,15 @@ export class ClientService {
   private async checkUnsubscribeList(clients: IClient[]) {
     const unsubscribeList = await this.unsubscribesService.findAllUnsubscribe();
 
-    const clientsWithoutUnsubscribe: IClient[] = [].concat(
-      clients.filter((val) =>
-        unsubscribeList.every((val2) => val.email !== val2.email),
-      ),
-    );
-
-    return clientsWithoutUnsubscribe;
+    if (unsubscribeList) {
+      const clientsWithoutUnsubscribe: IClient[] = [].concat(
+        clients.filter((val) =>
+          unsubscribeList.every((val2) => val.email !== val2.email),
+        ),
+      );
+      return clientsWithoutUnsubscribe;
+    }
+    return clients;
   }
 
   async create(file: Express.Multer.File) {
@@ -72,7 +74,7 @@ export class ClientService {
     const data = {
       data: clientsWithoutUnsubscribe,
     };
-    return await this.prisma.client.createMany(data);
+    await this.prisma.client.createMany(data);
   }
 
   async findAll() {
