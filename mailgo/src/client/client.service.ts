@@ -20,12 +20,13 @@ export class ClientService {
     /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 
   private validateEmail(email: string): boolean {
-    const emailWithoutSpaces = email.replace(/ /g, '');
+    const emailWithoutSpaces = email.replace(/ /g, ''); // remove espaços
     return this.EMAIL_REGEX.test(emailWithoutSpaces);
   }
 
   private async checkUnsubscribeList(clients: IClient[]) {
     const unsubscribeList = await this.unsubscribesService.findAllUnsubscribe();
+
     const clientsWithoutUnsubscribe: IClient[] = [].concat(
       clients.filter((val) =>
         unsubscribeList.every((val2) => val.email !== val2.email),
@@ -54,7 +55,7 @@ export class ClientService {
       const cod = clientSplit[0]; // posição do cod_client no arquivo CSV
       const CNPJ = clientSplit[4]; // posição do CNPJ no arquivo CSV
       const email = clientSplit[5]; // posição do email no arquivo CSV
-      const clientSituation = clientSplit[6]; // posição do situação no arquivo CSV
+      const clientSituation = clientSplit[6]; // posição do situação no arquivo CSV A = Ativo B = Baixado
 
       const isEmailValid = this.validateEmail(email);
 
@@ -65,13 +66,11 @@ export class ClientService {
         });
       }
     }
-
     const clientsWithoutUnsubscribe = await this.checkUnsubscribeList(
       clientsWithValidEmail,
     );
-
     const data = {
-      data: clientsWithoutUnsubscribe ,
+      data: clientsWithoutUnsubscribe,
     };
     return await this.prisma.client.createMany(data);
   }
