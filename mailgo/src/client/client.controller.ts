@@ -1,13 +1,14 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { ClientService } from './client.service';
-import { CreateClientDto } from './dto/create-client.dto';
 
 @Controller('client')
 export class ClientController {
   constructor(private readonly clientService: ClientService) {}
 
-  @Post()
-  create(@Body() createClientDto: CreateClientDto[]) {
-    return this.clientService.create(createClientDto);
+  @Post('create/list')
+  @UseInterceptors(FileInterceptor('file'))
+  async create(@UploadedFile() file: Express.Multer.File) {
+    this.clientService.create(file);
   }
 }
