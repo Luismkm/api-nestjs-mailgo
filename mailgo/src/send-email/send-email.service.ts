@@ -9,7 +9,7 @@ export class SendEmailService {
   constructor(
     private readonly clientService: ClientService,
     private readonly clientTokenService: ClientTokenService,
-    private readonly amqpConnection: AmqpConnection, 
+    private readonly amqpConnection: AmqpConnection,
   ) {}
 
   async createSend(emailContent: EmailContent) {
@@ -24,11 +24,11 @@ export class SendEmailService {
           email: client.email,
         });
       }
-       await this.amqpConnection.publish('exmailgo', 'routermail', {
+      await this.amqpConnection.publish('exmailgo', 'routermail', {
         client,
         emailContent,
         token,
-      }); 
+      });
     }
   }
 }

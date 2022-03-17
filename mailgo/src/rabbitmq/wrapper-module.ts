@@ -1,7 +1,7 @@
 import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
 import { Module } from '@nestjs/common';
 
- @Module({
+@Module({
   imports: [
     RabbitMQModule.forRoot(RabbitMQModule, {
       uri: `amqp://admin:admin@rabbitmq:5672`,
