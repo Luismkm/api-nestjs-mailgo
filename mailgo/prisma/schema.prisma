@@ -25,7 +25,6 @@ model Unsubscribe {
 model Client {
   cod          String     @id
   email        String
-  sended       String     @default("N")
   created_at   DateTime   @default(now())
 }
 
