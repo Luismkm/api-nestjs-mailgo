@@ -14,10 +14,21 @@ export class ClientTokenService {
     return clientToken.token;
   }
 
-  async findToken(client_cod: string) {
+  async findTokenByClientCod(client_cod: string) {
     const clientToken = await this.prisma.clientToken.findFirst({
       where: { client_cod },
     });
     return clientToken ? clientToken.token : null;
+  }
+
+  async findTokenByToken(token: string) {
+    const client = await this.prisma.clientToken.findUnique({
+      where: { token },
+      select: {
+        client_cod: true,
+        email: true,
+      },
+    });
+    return client;
   }
 }
