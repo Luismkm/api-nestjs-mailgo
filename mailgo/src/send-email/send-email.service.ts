@@ -17,7 +17,7 @@ export class SendEmailService {
 
     for (const client of clients) {
       let token: string;
-      token = await this.clientTokenService.findToken(client.cod);
+      token = await this.clientTokenService.findTokenByClientCod(client.cod);
       if (!token) {
         token = await this.clientTokenService.generateToken({
           client_cod: client.cod,
