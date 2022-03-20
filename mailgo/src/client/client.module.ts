@@ -1,11 +1,13 @@
 import { Module } from '@nestjs/common';
 import { ClientService } from './client.service';
 import { ClientController } from './client.controller';
-import { ClientTokenService } from 'src/client-token/client-token.service';
-import { UnsubscribeService } from 'src/unsubscribe/unsubscribe.service';
+import { ClientTokenModule } from 'src/client-token/client-token.module';
+import { UnsubscribeModule } from 'src/unsubscribe/unsubscribe.module';
 
 @Module({
+  imports: [ClientTokenModule, UnsubscribeModule],
   controllers: [ClientController],
-  providers: [ClientService, ClientTokenService, UnsubscribeService],
+  providers: [ClientService],
+  exports: [ClientService],
 })
 export class ClientModule {}
