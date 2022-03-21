@@ -6,16 +6,20 @@ import { MailData } from './model/MailData';
 export class MailService {
   constructor(private mailerService: MailerService) {}
 
-  async sendUserConfirmation(content: MailData) {
-    await this.mailerService.sendMail({
-      to: content.client.email,
-      // from: '"Support Team" <support@example.com>', // override default from ( in mail.module.ts)
-      subject: content.emailContent.emailSubject,
-      template: '../email-content',
-      context: {
-        linkImg: content.emailContent.linkImgBanner,
-        linkUnsubscribe: `https://mailgo.com.br/unsubscribe/${content.token}`,
-      },
-    });
+  async handleSendEmail(content: MailData) {
+    try {
+      await this.mailerService.sendMail({
+        to: content.client.email,
+        // from: '"Support Team" <support@example.com>', // override default from ( in mail.module.ts)
+        subject: content.emailContent.emailSubject,
+        template: '../email-content',
+        context: {
+          linkImg: content.emailContent.linkImgBanner,
+          linkUnsubscribe: `https://mailgo.com.br/unsubscribe/${content.token}`,
+        },
+      });
+    } catch (error) {
+      return error;
+    }
   }
 }

@@ -1,4 +1,4 @@
-import { RabbitRPC } from '@golevelup/nestjs-rabbitmq';
+import { Nack, RabbitRPC } from '@golevelup/nestjs-rabbitmq';
 import { Injectable } from '@nestjs/common';
 import { MailService } from './mail/mail.service';
 import { MailData } from './mail/model/MailData';
@@ -12,6 +12,9 @@ export class AppService {
     queue: 'queue-mail',
   })
   public async rpcHandler(msgQueue: MailData) {
-    await this.mailService.sendUserConfirmation(msgQueue);
+    const response = await this.mailService.handleSendEmail(msgQueue);
+    if (response instanceof Error) {
+      return new Nack(true);
+    }
   }
 }
