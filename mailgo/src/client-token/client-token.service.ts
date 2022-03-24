@@ -7,10 +7,9 @@ export class ClientTokenService {
   constructor(private readonly prisma: PrismaService) {}
 
   async generateToken(client: Prisma.ClientTokenCreateInput) {
-    const data = {
+    const clientToken = await this.prisma.clientToken.create({
       data: client,
-    };
-    const clientToken = await this.prisma.clientToken.create(data);
+    });
     return clientToken.token;
   }
 

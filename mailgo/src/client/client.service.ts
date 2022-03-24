@@ -71,10 +71,9 @@ export class ClientService {
     const clientsWithoutUnsubscribe = await this.checkUnsubscribeList(
       clientsWithValidEmail,
     );
-    const data = {
+    await this.prisma.client.createMany({
       data: clientsWithoutUnsubscribe,
-    };
-    await this.prisma.client.createMany(data);
+    });
   }
 
   async findAll() {
