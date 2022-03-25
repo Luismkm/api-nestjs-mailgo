@@ -16,21 +16,27 @@ export class UnsubscribeService {
   }
 
   async addInUnsubscribeList(token: string) {
-    const client = await this.clientToken.findTokenByToken(token);
-    if (client) {
-      const alreadyAdded = await this.prisma.unsubscribe.findUnique({
-        where: { cod: client.client_cod },
-      });
+    const UUID_REGEX =
+      /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
-      if (!alreadyAdded) {
-        return await this.prisma.unsubscribe.create({
-          data: {
-            cod: client.client_cod,
-            email: client.email,
-          },
+    const isUuid = UUID_REGEX.test(token);
+    if (isUuid) {
+      const client = await this.clientToken.findTokenByToken(token);
+      if (client) {
+        const alreadyAdded = await this.prisma.unsubscribe.findUnique({
+          where: { cod: client.client_cod },
         });
+
+        if (!alreadyAdded) {
+          return await this.prisma.unsubscribe.create({
+            data: {
+              cod: client.client_cod,
+              email: client.email,
+            },
+          });
+        }
+        return;
       }
-      return;
     }
     throw new BadRequestError('Invalid token');
   }
