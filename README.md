@@ -4,7 +4,7 @@
 
 ## Descrição
 
-<p>API REST desenvolvido com NestJs.Sua principal funcionalidade e automatizar envios de e-mails marketing com geração de token para realização de unsubscribe.</p>
+<p>API REST desenvolvido com NestJS. Sua principal funcionalidade e automatizar envios de e-mails marketing com geração de token para realização de unsubscribe.</p>
 
 <p>Os destinatários são importados através de uma base de dados em CSV.
 <br />
