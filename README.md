@@ -28,9 +28,9 @@ $ docker-compose up
 
 ```
 
-Executar ```docker-compose up``` - Levanta todos os containers, inclusive o RabbitMQ.<br/>
-Acesse [http://localhost:15672/](http://localhost:15672/) e faça login no RabbitMQ com admin/admin.<br/>
-Em exchanges é necessário dar ```bind``` na queue ```mail``` com routing key ```routermail```.
+ - Executar ```docker-compose up``` - Levanta todos os containers, inclusive o RabbitMQ.<br/>
+ - Acesse [http://localhost:15672/](http://localhost:15672/) e faça login no RabbitMQ com admin/admin.<br/>
+ - Em exchanges é necessário dar ```bind``` na queue ```mail``` com routing key ```routermail```.
 
 ## Principais tecnologias utilizadas
 
